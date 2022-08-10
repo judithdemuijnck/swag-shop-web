@@ -56,7 +56,7 @@ function App() {
             product={product}
             handleClick={handleWishlistToggle}
             //coudln't deconstruct here for whatever reason
-            isOnWishlist={wishlist.find(({_id}) => product._id == _id)}
+            isOnWishlist={wishlist.find(({_id}) => product._id === _id)}
           />
         </div >
     )
