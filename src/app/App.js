@@ -37,8 +37,10 @@ const sampleData = [
 function App() {
   const [products, setProducts] = useState(sampleData);
 
+
   // const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
+  const [wishlist, setWishlist] = useState([]);
 
   // useEffect(() => {
   //   http.getProducts()
@@ -52,10 +54,29 @@ function App() {
         < div className="col-sm-4" key={product._id} >
           <Product
             product={product}
+            handleClick={handleWishlistToggle}
+            //coudln't deconstruct here for whatever reason
+            isOnWishlist={wishlist.find(item => product._id == item._id)}
           />
         </div >
     )
     return (productList)
+  }
+
+  const handleWishlistToggle = (event, product) => {
+    event.preventDefault();
+    //where does {_id} come from? deconstructored from wishlist?
+    const indexOnWishlist = wishlist.findIndex(({ _id }) => product._id == _id);
+    console.log(indexOnWishlist);
+    if (indexOnWishlist >= 0) {
+      wishlist.splice(indexOnWishlist, 1);
+      setWishlist([...wishlist]);
+      console.log("wishlist after remove", wishlist)
+    } else {
+      setWishlist([...wishlist, product]);
+      //why does the latest product not show up when added to wishlist?
+      console.log("wishlist after adding", wishlist);
+    }
   }
 
   return (
@@ -73,7 +94,9 @@ function App() {
 
           </div>
           <div className="col-sm-4">
-            <Wishlist />
+            <Wishlist
+              wishlist={wishlist}
+              handleClick={handleWishlistToggle} />
           </div>
 
         </div>

@@ -1,38 +1,9 @@
-import React, { useEffect, useState } from "react";
 import "./product.css";
-import DataService from "../services/data-service";
-import NotificationService, { NOTIFICATION_WISHLIST_CHANGED } from "../services/notification-service";
 
-const ds = new DataService();
-const ns = new NotificationService();
 function Product(props) {
 
-    const [onWishlist, setOnWishlist] = useState(ds.itemOnWishlist());
-
-    useEffect(() => {
-        function onWishlistChanged(newWishlist) {
-            setOnWishlist(ds.itemOnWishlist([props.product]));
-        }
-
-        ns.addObserver(NOTIFICATION_WISHLIST_CHANGED, this, onWishlistChanged);
-
-        return function cleanUp() {
-            ns.removeObserver(this, NOTIFICATION_WISHLIST_CHANGED)
-        }
-    })
-
-
-    const onButtonClicked = () => {
-        if (onWishlist) {
-            ds.removeFromWishlist(props.product);
-        } else {
-            ds.addToWishlist(props.product);
-        }
-
-    }
-
     let btnClass;
-    if (onWishlist) {
+    if (props.isOnWishlist) {
         btnClass = "btn btn-danger";
     } else {
         btnClass = "btn btn-primary";
@@ -46,12 +17,9 @@ function Product(props) {
                 <p className="card-text">Price: ${props.product.price}</p>
                 <a
                     href="#"
-                    onClick={(evt) => {
-                        evt.preventDefault();
-                        onButtonClicked();
-                    }}
+                    onClick={e => props.handleClick(e, props.product)}
                     className={btnClass}
-                >{onWishlist ? "Remove from Wishlist" : "Add to Wishlist"}</a>
+                >{props.isOnWishlist ? "Remove from Wishlist" : "Add to Wishlist"}</a>
             </div>
         </div >
     )
