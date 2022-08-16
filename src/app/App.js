@@ -56,7 +56,7 @@ function App() {
             product={product}
             handleClick={handleWishlistToggle}
             //coudln't deconstruct here for whatever reason
-            isOnWishlist={wishlist.find(item => product._id == item._id)}
+            isOnWishlist={wishlist.find(({_id}) => product._id === _id)}
           />
         </div >
     )
@@ -74,7 +74,7 @@ function App() {
       console.log("wishlist after remove", wishlist)
     } else {
       setWishlist([...wishlist, product]);
-      //why does the latest product not show up when added to wishlist?
+      //why does the latest product not show up when added to wishlist? 
       console.log("wishlist after adding", wishlist);
     }
   }
